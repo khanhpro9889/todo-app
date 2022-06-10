@@ -1,24 +1,85 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+
+import { Parents, 
+  Title, 
+  Box,
+  AddBox,
+  ListBox, 
+  FlexRow,
+  Flex5,
+  Flex1
+} from './styles';
+
+import ToDoItem from './components/ToDoItem';
+import Button from './components/button';
 
 function App() {
+  const [text, setText] = useState('');
+  const [listThingsToDo, setListThingsToDo] = useState([]);
+
+  const handleClickButton = () => {
+    if (text.length === 0) {
+      return;
+    } else {
+      const length = listThingsToDo.length;
+      setListThingsToDo(
+        [ 
+          ...listThingsToDo, 
+          {
+            id: length === 0 ? 1 : listThingsToDo[length - 1].id + 1, 
+            text, 
+            createdDate: new Date(), 
+            status: false}
+        ]
+      )
+      setText('');
+    }
+  }
+
+  const handleDeleteItem = (id) => {
+    setListThingsToDo(listThingsToDo.filter(item => item.id !== id));
+  }
+
+  const handleDoneItem = (id) => {
+    setListThingsToDo(listThingsToDo.map(item => {
+      if (item.id === id) {
+        item.status = item.status ? false : true;
+      }
+      return item;
+    }))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Parents>
+        <Box>
+          <div><Title>Things to do</Title></div>
+          <AddBox>
+            <FlexRow>
+                <Flex5>
+                  <input type="text" value={text} onChange={(event) => setText(event.target.value)}/>
+                </Flex5>
+                <Flex1>
+                  <Button text='Add' action={handleClickButton}></Button>
+                </Flex1>
+            </FlexRow>
+          </AddBox>
+          {listThingsToDo.length > 0 && <hr />}
+          <ListBox>
+            {listThingsToDo && listThingsToDo.map(item => {
+              return (
+                <ToDoItem 
+                  key={item.id}
+                  item={item} 
+                  deleteItem={() => handleDeleteItem(item.id)} 
+                  doneItem={() => handleDoneItem(item.id)}
+                />
+              )
+            })}
+          </ListBox>
+        </Box>
+      </Parents>
+    </>
   );
 }
 
