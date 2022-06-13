@@ -3,6 +3,6 @@ import { Btn } from './styles';
 
 export default function Button({text, action}) {
   return (
-    <Btn onClick={() => { action() }}>{text}</Btn>
+    <Btn onClick={action}>{text}</Btn>
   )
 }

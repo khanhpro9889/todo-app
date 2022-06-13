@@ -17,7 +17,8 @@ function App() {
   const [text, setText] = useState('');
   const [listThingsToDo, setListThingsToDo] = useState([]);
 
-  const handleClickButton = () => {
+  const handleClickButton = (e) => {
+    e.preventDefault();
     if (text.length === 0) {
       return;
     } else {
@@ -55,14 +56,16 @@ function App() {
         <Box>
           <div><Title>Things to do</Title></div>
           <AddBox>
-            <FlexRow>
-                <Flex5>
-                  <input type="text" value={text} onChange={(event) => setText(event.target.value)}/>
-                </Flex5>
-                <Flex1>
-                  <Button text='Add' action={handleClickButton}></Button>
-                </Flex1>
-            </FlexRow>
+            <form onSubmit={handleClickButton}>
+              <FlexRow>
+                  <Flex5>
+                    <input type="text" value={text} onChange={(event) => setText(event.target.value)}/>
+                  </Flex5>
+                  <Flex1>
+                    <Button text='Add' action={handleClickButton}></Button>
+                  </Flex1>
+              </FlexRow>
+            </form>
           </AddBox>
           {listThingsToDo.length > 0 && <hr />}
           <ListBox>
