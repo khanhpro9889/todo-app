@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Checkbox, Button } from "antd";
+import { Checkbox, Button, Popconfirm, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
@@ -19,6 +19,14 @@ export default function TodoItem({ onChange, item, onDelete }: typeProps) {
     setChecked(evt.target.checked);
     onChange(evt.target.checked, item.id);
   };
+
+  const confirm = () => {
+    onDelete(item.id);
+    message.success("Removed");
+  };
+
+  const cancel = () => {};
+
   return (
     <div
       style={{
@@ -30,11 +38,15 @@ export default function TodoItem({ onChange, item, onDelete }: typeProps) {
       <Checkbox checked={checked ? true : false} onChange={handleChange}>
         {item.name}
       </Checkbox>
-      <Button
-        danger
-        icon={<DeleteOutlined />}
-        onClick={() => onDelete(item.id)}
-      ></Button>
+      <Popconfirm
+        title="Are you sure to delete this task?"
+        onConfirm={confirm}
+        onCancel={cancel}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button danger icon={<DeleteOutlined />} />
+      </Popconfirm>
     </div>
   );
 }

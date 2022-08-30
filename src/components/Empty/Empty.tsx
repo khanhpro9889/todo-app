@@ -1,5 +1,5 @@
 import React from "react";
-import { Empty, Button } from "antd";
+import { Empty } from "antd";
 import { CarryOutOutlined } from "@ant-design/icons";
 
 export default function EmptyComponent() {
